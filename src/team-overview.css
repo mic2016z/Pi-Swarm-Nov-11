@@ -1,0 +1,22 @@
+#team-overview-dialog {
+  width: min(980px, calc(100vw - 32px));
+  max-width: 980px;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 24px;
+}
+#team-overview-dialog .team-overview-header,
+#team-overview-dialog .team-overview-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#team-overview-dialog .team-overview-header h2 { margin: 0; }
+#team-overview-dialog .team-overview-intro { margin: 12px 0; }
+#team-overview-dialog .team-overview-usage { display: flex; flex-wrap: wrap; gap: 10px 24px; padding: 14px; border-radius: 8px; background: var(--bg-primary); }
+#team-overview-dialog .team-overview-usage p { flex-basis: 100%; margin: 0; font-size: 13px; }
+#team-overview-status { margin: 12px 0; font-size: 13px; }
+#team-overview-agents { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.team-overview-agent { min-width: 0; padding: 16px; border: 1px solid var(--border-color); border-radius: 8px; }
+.team-overview-agent h3 { margin-bottom: 12px; color: var(--accent-mint); }
+.team-overview-agent dl { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 8px 12px; font-size: 13px; }
+.team-overview-agent dt { color: var(--text-muted); }
+.team-overview-agent dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 160px; overflow: auto; }
+#team-overview-dialog .team-overview-footer { margin-top: 16px; justify-content: flex-end; }
+@media (max-width: 680px) { #team-overview-agents { grid-template-columns: 1fr; } }

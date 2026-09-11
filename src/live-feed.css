@@ -1,0 +1,242 @@
+/* Live Feed panel */
+
+/* A class rule beats the user-agent [hidden] rule, so state it explicitly or
+   the panel stays on screen while the code believes it is hidden. */
+.live-feed-panel[hidden] { display: none; }
+
+.live-feed-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 10px;
+  background: var(--bg-primary);
+  gap: 8px;
+}
+
+.feed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.feed-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-mint);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.feed-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#feed-filter {
+  font-size: 12px;
+  min-width: 120px;
+}
+
+/* Agent status bar */
+.feed-agents-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+.feed-agents-bar > strong {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.feed-agents-list {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.feed-agent-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+}
+
+.feed-agent-name {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.feed-agent-status {
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+.feed-agent-model {
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+.feed-agent-working {
+  border-color: var(--accent-mint);
+  background: var(--accent-mint-alpha);
+}
+
+.feed-agent-working .feed-agent-status {
+  color: var(--accent-mint);
+}
+
+.feed-agent-idle .feed-agent-status {
+  color: var(--text-muted);
+}
+
+/* Feed stream */
+.feed-stream {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.feed-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: var(--font-ui);
+}
+
+.feed-event {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--bg-tertiary);
+  line-height: 1.5;
+  min-height: 24px;
+}
+
+.feed-event:last-child {
+  border-bottom: none;
+}
+
+.feed-event:hover {
+  background: var(--bg-tertiary);
+}
+
+.feed-time {
+  flex-shrink: 0;
+  width: 70px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.feed-badge {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.feed-agent {
+  flex-shrink: 0;
+  min-width: 60px;
+  max-width: 80px;
+  font-weight: 600;
+  color: var(--accent-mint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feed-type {
+  flex-shrink: 0;
+  min-width: 70px;
+  max-width: 110px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feed-details {
+  flex: 1;
+  color: var(--text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Event type highlights */
+.feed-event-message .feed-type {
+  color: #58a6ff;
+}
+
+.feed-event-task .feed-type {
+  color: #d2a8ff;
+}
+
+.feed-event-warning {
+  background: rgba(255, 123, 114, 0.08);
+}
+
+.feed-event-warning .feed-type {
+  color: var(--danger-text);
+}
+
+/* Status footer */
+.feed-status {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* Scrollbar styling */
+.feed-stream::-webkit-scrollbar {
+  width: 6px;
+}
+
+.feed-stream::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.feed-stream::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+
+.feed-stream::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}

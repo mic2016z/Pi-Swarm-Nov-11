@@ -1,0 +1,220 @@
+{
+  "run": 1,
+  "variant": "existing running Codex CLI + legacy worker dispatch",
+  "request": "69344d89-7751-4e6d-9f27-8802e28d6b75",
+  "marker": "HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75",
+  "project": "d:\\coding\\pi squad version 2",
+  "master_thread": "01a08137-c8b4-78b2-b647-d7876420e44e",
+  "app_pid": 50280,
+  "master_pid": 3660,
+  "started_at": 1788876372.5831342,
+  "workers": 24,
+  "status": "replied",
+  "notes": [
+    "App not restarted. Intercom source/build prepared but existing worker processes retain old loaded extensions.",
+    "Single trial, not a statistically reliable comparison. Subsequent tests must verify actual transport."
+  ],
+  "receipt": {
+    "id": "69344d89-7751-4e6d-9f27-8802e28d6b75",
+    "thread": "01a08137-c8b4-78b2-b647-d7876420e44e",
+    "source": "01a08124-28c4-7341-be74-61e99f4c44d5",
+    "digest": "757fb1f47d46135f97134a782a7b759863f5a23645cf2e860604a36856750544",
+    "status": "replied",
+    "submitted": 1788876373.5282078,
+    "transport": "Queued message 01a08157-3f0e-7c72-8b80-3480977f6793 for thread 01a08137-c8b4-78b2-b647-d7876420e44e.",
+    "response": "Greeting benchmark 1: partial results after the 180-second cutoff.\n\nCompleted: 23/24 fresh, successful greetings with the exact marker.\nMissing: pi-9; benchmark job 000000000002 remains pending. Its earlier job 000000000001 is also pending.\nFailed results: 0 recorded.\nJob IDs: pi-1 through pi-24 each received 000000000002 exactly once. Completed result IDs: 000000000002 for pi-1 through pi-8 and pi-10 through pi-24; no result yet for pi-9.\n\nMarker: HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n\nActual fresh replies:\n- pi-1: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-2: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-3: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-4: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-5: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-6: Hi HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-7: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-8: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-10: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-11: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-12: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-13: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-14: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-15: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-16: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-17: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-18: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-19: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-20: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-21: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-22: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-23: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n- pi-24: Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75\n\nExisting queue and sessions used. No retries, restarts, model/provider changes, or project code edits.\n",
+    "completed": 1788876622.473756
+  },
+  "accepted_observed_at": 1788876373.8847754,
+  "results": [
+    {
+      "agent": 1,
+      "job": "000000000002",
+      "started": 1788876411.118,
+      "completed": 1788876415.337,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 2,
+      "job": "000000000002",
+      "started": 1788876411.71,
+      "completed": 1788876414.647,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 3,
+      "job": "000000000002",
+      "started": 1788876411.818,
+      "completed": 1788876416.933,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 4,
+      "job": "000000000002",
+      "started": 1788876412.093,
+      "completed": 1788876414.669,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 5,
+      "job": "000000000002",
+      "started": 1788876412.349,
+      "completed": 1788876415.064,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 6,
+      "job": "000000000002",
+      "started": 1788876412.647,
+      "completed": 1788876415.273,
+      "status": "success",
+      "output": "Hi HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 7,
+      "job": "000000000002",
+      "started": 1788876413.13,
+      "completed": 1788876415.779,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 8,
+      "job": "000000000002",
+      "started": 1788876413.162,
+      "completed": 1788876416.403,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 10,
+      "job": "000000000002",
+      "started": 1788876414.175,
+      "completed": 1788876417.674,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 11,
+      "job": "000000000002",
+      "started": 1788876414.456,
+      "completed": 1788876418.565,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 12,
+      "job": "000000000002",
+      "started": 1788876414.643,
+      "completed": 1788876419.105,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 13,
+      "job": "000000000002",
+      "started": 1788876414.784,
+      "completed": 1788876417.399,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 14,
+      "job": "000000000002",
+      "started": 1788876415.298,
+      "completed": 1788876418.544,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 15,
+      "job": "000000000002",
+      "started": 1788876415.633,
+      "completed": 1788876417.652,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 16,
+      "job": "000000000002",
+      "started": 1788876415.659,
+      "completed": 1788876419.557,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 17,
+      "job": "000000000002",
+      "started": 1788876416.356,
+      "completed": 1788876420.007,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 18,
+      "job": "000000000002",
+      "started": 1788876416.934,
+      "completed": 1788876419.903,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 19,
+      "job": "000000000002",
+      "started": 1788876417.009,
+      "completed": 1788876419.902,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 20,
+      "job": "000000000002",
+      "started": 1788876417.432,
+      "completed": 1788876420.167,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 21,
+      "job": "000000000002",
+      "started": 1788876417.937,
+      "completed": 1788876423.675,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 22,
+      "job": "000000000002",
+      "started": 1788876418.354,
+      "completed": 1788876421.267,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 23,
+      "job": "000000000002",
+      "started": 1788876418.695,
+      "completed": 1788876421.73,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    },
+    {
+      "agent": 24,
+      "job": "000000000002",
+      "started": 1788876419.242,
+      "completed": 1788876422.809,
+      "status": "success",
+      "output": "Hi! HELLO-BENCH-69344d89-7751-4e6d-9f27-8802e28d6b75"
+    }
+  ],
+  "master_reply_seconds": 249.89062190055847,
+  "verified_greetings": 23,
+  "first_greeting_seconds": 42.06386590003967,
+  "last_received_greeting_seconds": 51.09186577796936,
+  "all_24_seconds": null
+}

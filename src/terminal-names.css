@@ -1,0 +1,8 @@
+.terminal-header { gap: 8px; }
+.terminal-title { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.terminal-rename { padding: 3px 6px; font-size: 10px; }
+.terminal-badge { flex-shrink: 0; }
+#rename-terminal-dialog { width: min(420px, calc(100vw - 32px)); }
+#rename-terminal-dialog label { display: block; margin-bottom: 8px; }
+#terminal-name-input { width: 100%; }
+#rename-terminal-dialog .rename-error { color: var(--danger-text); margin: 8px 0 16px; font-size: 12px; }

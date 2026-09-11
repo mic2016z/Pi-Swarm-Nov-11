@@ -1,0 +1,23 @@
+{
+  "name": "pi-squad",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 1420",
+    "build": "vite build",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.10.0",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "pi-messenger": "0.15.2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.10.0",
+    "playwright": "^1.63.0",
+    "tsx": "4.23.13",
+    "vite": "^7.0.0"
+  }
+}

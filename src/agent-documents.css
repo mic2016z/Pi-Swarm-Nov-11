@@ -1,0 +1,206 @@
+/* Document Buttons in Terminal Header */
+.terminal-doc-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.terminal-doc-btn {
+  padding: 2px 6px;
+  font-size: 10px;
+  line-height: 1.2;
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+.terminal-doc-btn:hover {
+  color: var(--accent-mint);
+  border-color: var(--accent-mint);
+  background-color: var(--bg-tertiary);
+}
+
+/* Modal Window */
+dialog#agent-document-dialog.agent-doc-dialog {
+  max-width: 860px;
+  width: min(860px, calc(100vw - 32px));
+  height: min(680px, calc(100vh - 48px));
+  padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+}
+
+dialog#agent-document-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-doc-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  padding: 16px 20px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.agent-doc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.agent-doc-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.agent-doc-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-bottom: 4px;
+}
+
+.agent-doc-pane-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  background-color: var(--bg-tertiary);
+  color: var(--accent-mint);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.agent-doc-path {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-doc-status {
+  font-size: 11px;
+  color: var(--accent-mint);
+  font-family: var(--font-mono);
+}
+
+/* Error banner */
+.agent-doc-error {
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+/* Textarea / Editor */
+.agent-doc-editor-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.agent-doc-textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-main);
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  tab-size: 2;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.agent-doc-textarea:focus {
+  border-color: var(--border-focus);
+}
+
+.agent-doc-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.agent-doc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.agent-doc-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.agent-doc-hint kbd {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+}
+
+.agent-doc-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Override broad base dialog div styles and keep controls usable in narrow panes. */
+#agent-document-dialog div { justify-content: initial; gap: initial; }
+#agent-document-dialog .agent-doc-meta { display: block; }
+#agent-document-dialog .agent-doc-path { display: block; }
+#agent-document-dialog .agent-doc-error[hidden], .agent-doc-discard[hidden] { display: none; }
+.agent-doc-discard { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
+.terminal-header { flex-wrap: wrap; }
+.terminal-title { flex-basis: 80px; }
+.terminal-doc-group { flex-wrap: wrap; }
+.agent-doc-title { flex-wrap: wrap; }
+.agent-doc-pane-badge { overflow-wrap: anywhere; }
+.agent-doc-footer { flex-wrap: wrap; }
+.agent-doc-hint { flex: 1; min-width: 180px; }
+
+/* Body-level dropdown avoids clipping inside terminal cards. */
+.terminal-doc-toggle { min-width: 38px; font-size: 20px; line-height: 1; }
+.terminal-doc-menu { position: fixed; z-index: 1000; min-width: 160px; padding: 6px; border: 1px solid #454b54; border-radius: 8px; background: #22272e; box-shadow: 0 8px 24px #0008; }
+.terminal-doc-menu[hidden] { display: none; }
+.terminal-doc-item { display: block; width: 100%; padding: 10px 14px; border: 0; border-radius: 4px; background: transparent; color: #f0f3f6; text-align: left; cursor: pointer; font: inherit; }
+.terminal-doc-item:hover, .terminal-doc-item:focus-visible { background: #343c45; outline: 2px solid #00dfa0; outline-offset: -2px; }
+
+/* Keep the whole dialog, footer included, inside the viewport.
+   A taller box was being clipped at the window edge, hiding Save and Cancel. */
+dialog#agent-document-dialog.agent-doc-dialog {
+  height: min(660px, calc(100vh - 96px));
+  max-height: calc(100vh - 96px);
+  margin: auto;
+}
+.agent-doc-frame { padding: 14px 18px 16px; }
+.agent-doc-footer { padding-top: 10px; }
