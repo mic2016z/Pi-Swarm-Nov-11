@@ -108,6 +108,25 @@ A slice carries a `brief`, written by the queen **after the slice's dependencies
 
 The queen pays the large context cost once per slice; each drone pays a fraction. This asymmetry is why 1 queen + N cheap workers beats N strong agents: strong agents re-read everything, paying the context cost N times.
 
+## Power Ladder (who may touch what)
+
+```
+Level 0 — Pi drones:    files only (read/write/edit/delete). No git, no GitHub,
+                        no network. Report results to the sub-queen.
+Level 1 — sub-queens:   git + GitHub. Review drone diffs, run acceptance locally,
+                        commit, push, open PRs, file issues. GitHub token holders.
+Level 2 — grand queen:  merge PRs, resolve cross-workspace issues, declare complete.
+```
+
+### Rules
+
+1. **Only sub-queens touch GitHub.** Credential surface is 4 agents, not 16. PRs are opened by sub-queens based on drone reports.
+2. **PR body attributes honestly:** "Implemented by drone pi-3 per brief s042, workspace backend." The board carries the real record; git history shows the queen as committer.
+3. **Two-stage acceptance:** sub-queen runs the acceptance command locally before pushing (fast gate); CI re-runs it on the PR (durable, unfalsifiable evidence).
+4. **Cross-workspace review:** workspace A's queen reviews workspace B's PR — reviewer is never the author, structurally.
+5. **Drones don't file issues.** They report findings to their queen, who files the issue if warranted.
+6. **Sub-queen turn loop includes harvest:** plan → brief → harvest completed drone slices → review diff → acceptance → commit/push/PR → back to planning.
+
 ## Known Bugs Carried Over (fix in this build, from HQS PRD)
 
 1. Relay identity check can never match (`sessionId` vs `sessionID`) — whole `--relay`/MCP path dead.
