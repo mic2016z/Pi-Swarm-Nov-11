@@ -82,6 +82,32 @@ The swarm is controlled from ONE surface; panes are for inspection only.
 - No JSON editing for interventions
 - No silent background pauses: every guard action (block, TTL, cutoff) appears as a card on the board with its reason
 
+## Context Compilation Protocol (the queen's core job)
+
+The queen is a **context compiler**: her real work is not planning but supplying each drone the exact, distilled context its slice needs. Drones never explore.
+
+### Slice brief (board object, first-class)
+
+A slice carries a `brief`, written by the queen **after the slice's dependencies complete** (excerpts must be fresh code):
+
+- `goal` — one sentence, what to change
+- `files` — owned paths (write) + read-only reference paths
+- `excerpts` — relevant code inline, not pointers; exact and trimmed
+- `conventions` — style/patterns the project uses that apply to this slice
+- `acceptance` — the command that proves it works
+
+### Rules
+
+1. **No brief, no claim.** A slice is `open` (claimable) only once its brief exists. Before that it is `briefing`.
+2. **Context budget** — ~8-12k tokens per brief. Overflow means the slice is too big: split it. The budget is a splitting signal, never an overflow.
+3. **No roaming.** Worker instructions: work from the brief; do not explore the repo; if the brief is insufficient, escalate with a *specific* question via the escalation channel.
+4. **Reviewer context differs.** A reviewer receives diff + acceptance + brief — not implementation context.
+5. **Layered context.** (a) Project conventions compiled once at plan time, shared by all slices. (b) Per-slice briefs. (c) Escalation answers as the on-demand third layer.
+
+### Economics
+
+The queen pays the large context cost once per slice; each drone pays a fraction. This asymmetry is why 1 queen + N cheap workers beats N strong agents: strong agents re-read everything, paying the context cost N times.
+
 ## Known Bugs Carried Over (fix in this build, from HQS PRD)
 
 1. Relay identity check can never match (`sessionId` vs `sessionID`) — whole `--relay`/MCP path dead.
