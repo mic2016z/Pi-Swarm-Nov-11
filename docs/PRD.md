@@ -47,13 +47,31 @@ The colony model: the Queen decomposes a user task into slices, workers claim an
 ## Swarm Improvements (new in this build)
 
 1. **Queen never works.** No self-claims; no board churn by the planner.
-2. **Slices declare files at creation.** Ownership stated up front → reservation conflicts are structurally impossible; workers shard by file.
+2. **Slices declare files at creation.** Ownership stated up front — reservation conflicts are structurally impossible; workers shard by file.
 3. **Worker tiers by tag.** Slices tagged `ui|backend|test|docs`; workers advertise capabilities; Queen routes by tag. Scales to 24 light workers.
 4. **Event-driven messaging.** Push delivery over the peer relay; no polling loops, idle workers burn zero model calls.
 5. **Pipelined review.** Reviewers work slice N while implementers build slice N+1.
 6. **Auto re-slicing.** A slice blocked twice is split or reassigned by the Queen, never left to deadlock.
 7. **Settle correctness.** A relay reply is only the final assistant response of the turn that answered the request (freshness-guarded).
 8. **Visible swarm.** Live board/graph view in the app: slices, owners, blockers, queue depth.
+
+## Rolling-Wave Planning (phased rollout)
+
+The Queen does not plan everything at once. She plans at increasing resolution, phase by phase — detailed now, fuzzy later.
+
+### Plan tiers
+
+1. **Architecture pass (Queen alone, serial).** Scaffold the skeleton herself; produce the paint-by-numbers picture: file tree, dependency map, ordered phases, workspace ownership per phase. Every future phase exists only as a one-line card (title + acceptance).
+2. **Phase expansion (Queen).** Only the current phase gets full-resolution slices + briefs. Future phases stay one-line cards — cheap to plan, cheap to throw away.
+3. **Build passes (swarm, parallel).** Drones claim and execute the current phase's slices at maximum parallelism; sub-queens integrate.
+4. **Phase gate (Queen, short).** Re-read what was actually built, then compile the next phase's briefs from real code — never from the stale plan. The gate is also the human checkpoint: approve the next phase.
+
+### Rules
+
+- **No over-planning.** Planning is serial, building is parallel; keep the serial portion minimal by never expanding future phases early.
+- **Plans are living documents.** A later phase may reopen earlier slices; revisions beat rollback.
+- **Briefs are compiled from reality at the gate.** Stale plans are the colony's enemy.
+- **Parallelism profile:** architecture pass = 1 agent; each phase = max parallelism; gates = short serial stints.
 
 ## Swarm Control UX (the human interface)
 

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Pi Squad"
-  short_description: "Connect and send explicit messages through MCP"
-  default_prompt: "Use $pisquad to connect to Pi Squad through MCP without sending a message yet."

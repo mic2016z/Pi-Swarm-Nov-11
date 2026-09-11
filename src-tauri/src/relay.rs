@@ -1,6 +1,7 @@
-//! Native local relay to the registered Hermes master, using the squad inbox
-//! format. Requests are accepted promptly into a queue directory. The master
-//! picks them up and delegates to available workers for concurrent execution.
+//! Native local relay to the registered Pi master, using Messenger's inbox format.
+//!
+//! Requests are accepted promptly into a queue directory. The master picks them
+//! up and delegates to available Pi workers for concurrent execution.
 //! No single-slot lock or busy-check blocks callers.
 
 use serde_json::{json, Value};
@@ -13,22 +14,13 @@ fn canonical(project: &str) -> Result<String, String> {
     let text = path.to_string_lossy().to_string();
     Ok(if cfg!(windows) { text.trim_start_matches(r"\\?\").to_lowercase() } else { text })
 }
-fn state_bases() -> Result<Vec<PathBuf>, String> {
-    let home = std::env::var_os("LOCALAPPDATA").or_else(||std::env::var_os("HOME")).or_else(||std::env::var_os("USERPROFILE"))
-        .map(|p|PathBuf::from(p)).ok_or("User state directory unavailable")?;
-    // New projects live under HermesSquads; OpenCodeSquads is still read so an
-    // existing squad keeps its saved sessions and documents.
-    Ok(vec![home.join("HermesSquads"), home.join("OpenCodeSquads")])
+fn base() -> Result<PathBuf, String> {
+    std::env::var_os("LOCALAPPDATA").or_else(||std::env::var_os("HOME")).or_else(||std::env::var_os("USERPROFILE"))
+        .map(|p|PathBuf::from(p).join("OpenCodeSquads")).ok_or("User state directory unavailable".into())
 }
 pub fn state_for(project: &str) -> Result<PathBuf, String> {
     let hash = format!("{:x}", Sha256::digest(canonical(project)?.as_bytes()));
-    let bases = state_bases()?;
-    // Prefer a state directory that already exists, newest convention first.
-    for base in &bases {
-        let candidate = base.join(&hash[..20]);
-        if candidate.exists() { return Ok(candidate); }
-    }
-    Ok(bases[0].join(&hash[..20]))
+    Ok(base()?.join(&hash[..20]))
 }
 pub fn alive(pid: u32) -> bool {
     if pid == 0 { return false; }
@@ -47,27 +39,22 @@ pub fn alive(pid: u32) -> bool {
 fn read(path: &Path) -> Result<Value,String> { serde_json::from_slice(&fs::read(path).map_err(|e|e.to_string())?).map_err(|e|e.to_string()) }
 fn identity(value:&Value)->Result<(),String> {
     if value["ready"]!=true || !alive(value["pid"].as_u64().unwrap_or(0) as u32) || !alive(value["app_pid"].as_u64().unwrap_or(0) as u32) {
-        return Err("Hermes master is not ready or its owning app has exited".into());
+        return Err("Pi master is not ready or its owning app has exited".into());
     }
     for field in ["project","sessionId","instance"] { if value[field].as_str().unwrap_or("").is_empty(){return Err(format!("Master registration missing {field}"));} }
     Ok(())
 }
-// The plugin registers "sessionID"; legacy state dirs wrote "sessionId".
-fn registry_session(record:&Value)->&str{ record["sessionID"].as_str().unwrap_or(record["sessionId"].as_str().unwrap_or("")) }
 pub fn discover(project: Option<&str>) -> Result<Value,String> {
     let mut masters=Vec::new();
-    for base in state_bases()? {
-        if !base.exists() { continue; }  // a missing legacy base is simply empty
-        for entry in fs::read_dir(&base).map_err(|e|e.to_string())?.flatten() {
-            if let Ok(value)=read(&entry.path().join("master-runtime.json")) {
-                let registered=read(&entry.path().join("squad/registry/master.json"));
-                if identity(&value).is_ok() && registered.as_ref().is_ok_and(|r|r["pid"]==value["pid"] && registry_session(r)==value["sessionId"].as_str().unwrap_or("")) { masters.push(value); }
-            }
+    for entry in fs::read_dir(base()?).map_err(|e|e.to_string())?.flatten() {
+        if let Ok(value)=read(&entry.path().join("master-runtime.json")) {
+            let registered=read(&entry.path().join("squad/registry/master.json"));
+            if identity(&value).is_ok() && registered.as_ref().is_ok_and(|r|r["pid"]==value["pid"] && r["sessionId"]==value["sessionId"]) { masters.push(value); }
         }
     }
-    if masters.len()!=1 { return Err(format!("Expected one live Hermes master; found {}",masters.len())); }
+    if masters.len()!=1 { return Err(format!("Expected one live Pi master; found {}",masters.len())); }
     let master=masters.remove(0);
-    if let Some(project)=project { if canonical(project)?!=canonical(master["project"].as_str().unwrap())? {return Err("Requested workspace differs from the active Hermes master".into());} }
+    if let Some(project)=project { if canonical(project)?!=canonical(master["project"].as_str().unwrap())? {return Err("Requested workspace differs from the active Pi master".into());} }
     Ok(master)
 }
 fn valid_id(id:&str)->Result<(),String> {

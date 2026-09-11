@@ -1,0 +1,10 @@
+from pathlib import Path
+p=Path('src-tauri/src/main.rs'); s=p.read_text()
+s=s.replace('struct Workspace { switching:', 'struct Workspace { document_open: bool, switching:')
+s=s.replace('fn read_agent_document(app: tauri::AppHandle, state: State<Shared>, id: String, filename: String) -> Result<String, String> {', 'fn read_agent_document(app: tauri::AppHandle, state: State<Shared>, id: String, filename: String) -> Result<String, String> {\n    {let mut ws=state.lock().map_err(error)?;if ws.switching {return Err("Workspace switch in progress".into());}ws.document_open=true;}')
+s=s.replace('async fn save_agent_document(', 'async fn save_agent_document(')
+s=s.replace('fn poll_project_controls(', '#[tauri::command]\nfn release_agent_document(state:State<Shared>) {if let Ok(mut ws)=state.lock(){ws.document_open=false;}}\nfn poll_project_controls(')
+s=s.replace('            squad::switch_ready(&project,false)?;\n            op["status"]=serde_json::json!("executing");squad::write(&file,&op)?;\n            state.lock().map_err(error)?.switching=true;', '            {let mut ws=state.lock().map_err(error)?;if ws.document_open || ws.switching {return Err("Close the document editor or finish the current switch first".into());}ws.switching=true;}\n            if let Err(e)=squad::switch_ready(&project,false) {state.lock().map_err(error)?.switching=false;return Err(e);}\n            op["status"]=serde_json::json!("executing");\n            if let Err(e)=squad::write(&file,&op){state.lock().map_err(error)?.switching=false;return Err(e);}')
+s=s.replace('shutdown,read_agent_document,save_agent_document]', 'shutdown,read_agent_document,release_agent_document,save_agent_document]')
+p.write_text(s)
+p=Path('src/agent-documents.js');s=p.read_text().replace("  dialog.addEventListener('close', () => {", "  dialog.addEventListener('close', () => {\n    void invoke('release_agent_document').catch(error => console.error('Document editor release failed', error));");p.write_text(s)

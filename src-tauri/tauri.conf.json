@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Hermes Quad Squad",
-  "version": "1.1.0",
-  "identifier": "local.hermes-quad-squad",
+  "productName": "Quad Squad OC",
+  "version": "1.0.0",
+  "identifier": "local.quad-squad-oc",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Hermes Quad Squad",
+        "title": "Quad Squad OC",
         "width": 1500,
         "height": 960,
         "minWidth": 900,
@@ -27,7 +27,10 @@
   "bundle": {
     "active": false,
     "resources": {
-      "../hermes-plugin/squad": "hermes-plugin/squad"
+      "../bridge.py": "bridge.py",
+      "../native_session.py": "native_session.py",
+      "../team.py": "team.py",
+      "../squad-plugin.ts": "squad-plugin.ts"
     }
   }
 }

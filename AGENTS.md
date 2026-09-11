@@ -4,6 +4,6 @@ Ant-colony coding swarm: one Queen planner + many light Pi workers cutting codin
 
 - Priorities: [docs/PRD.md](docs/PRD.md). Queen plans; workers claim dep-ready, capability-matching slices; guards (budgets, TTL, pair cutoff, acceptance evidence) enforced.
 - The Queen never claims slices. Sign-off requires recorded acceptance output + exit code 0.
-- Workers idle at zero cost — no polling loops, push-based delivery.
+- Workers idle at zero cost ΓÇö no polling loops, push-based delivery.
 - Fix the 7 known bugs from the HQS PRD before new features: relay identity, inbox delete-before-delivery, reservation gaps, unfalsifiable sign-off, settle freshness, seeded doc refresh, feed append race.
 - Before done: tests, build, and a live colony acceptance run.

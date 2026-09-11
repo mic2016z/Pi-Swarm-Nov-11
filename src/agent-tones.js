@@ -8,9 +8,9 @@
 // together sound like a chord rather than a clash.
 const TONES = [
   { match: 'master', frequency: 523.25 }, // C5
-  { match: 'hermes-1', frequency: 659.25 },   // E5
-  { match: 'hermes-2', frequency: 783.99 },   // G5
-  { match: 'hermes-3', frequency: 1046.5 },   // C6
+  { match: 'oc-1', frequency: 659.25 },   // E5
+  { match: 'oc-2', frequency: 783.99 },   // G5
+  { match: 'oc-3', frequency: 1046.5 },   // C6
 ];
 // Anything beyond the named agents keeps rising in whole steps so it stays distinct.
 const EXTRA_BASE = 1174.7;
@@ -21,7 +21,7 @@ let enabled = true;
 function frequencyFor(id) {
   const known = TONES.find((tone) => tone.match === id);
   if (known) return known.frequency;
-  const number = Number(/^hermes-(\d+)$/.exec(id)?.[1]);
+  const number = Number(/^oc-(\d+)$/.exec(id)?.[1]);
   return Number.isFinite(number) ? EXTRA_BASE * Math.pow(2, (number - 4) / 12) : 880;
 }
 

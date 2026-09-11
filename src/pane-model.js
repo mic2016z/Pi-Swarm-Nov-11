@@ -1,13 +1,12 @@
 // Per-pane model picker.
 //
 // Each terminal gets its own burger. The menu lists providers; each provider
-// opens a submenu of its models. Hermes has no external mid-session model
-// switch, but its /model slash command changes the session model when typed
-// into the pane, and the choice is remembered so a later relaunch of the pane
-// starts on the same model.
+// opens a submenu of its models. Choosing one relaunches that pane with the new
+// model and resumes its session, because OpenCode has no scriptable mid-session
+// switch: /model only raises an interactive dialog.
 //
 // Providers and models come from models.json beside the executable, so the list
-// can be edited without a rebuild, and from Hermes' own model catalog otherwise.
+// can be edited without a rebuild.
 
 export function installPaneModelPicker(invoke) {
   const menu = document.createElement('div');
@@ -57,23 +56,38 @@ export function installPaneModelPicker(invoke) {
 
   const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  /** Type Hermes' own /model command into the pane: `/model <id>` + Enter.
+  /** Drive OpenCode's own /model dialog: open, filter, select.
    *
-   * The pane's input encoding is handled by the terminal session itself (raw
-   * VT or Win32 key events), so plain text with a carriage return works in
-   * both modes. The choice is also recorded so a later relaunch of the pane
-   * starts on the same model.
+   * This is what the user would type, so the pane keeps its session and its
+   * scrollback; nothing restarts. The choice is also recorded so a later
+   * relaunch of the pane starts on the same model.
    */
   const ESC = String.fromCharCode(27);
+  // The panes run OpenCode's TUI in Win32 input mode, so a raw carriage return
+  // is ignored: Enter has to arrive as a key event. Letters pass through fine,
+  // which is why filtering worked while the dialog never opened.
+  const WIN32_ENTER = `${ESC}[13;28;13;1;0;1_${ESC}[13;28;13;0;0;1_`;
+  const WIN32_DOWN = `${ESC}[40;80;0;1;0;1_${ESC}[40;80;0;0;0;1_`;
 
   async function switchModel(id, model) {
-    if (!model.id) return;
     const send = (data) => invoke('write_terminal', { id, data });
     try {
       await send(ESC);            // leave anything already open
       await pause(250);
-      await send(`/model ${model.id}\r`);
-      await invoke('remember_pane_model', { id, model: model.id }).catch(() => {});
+      await send('/model');
+      await pause(700);
+      await send(WIN32_ENTER);    // run the command; this is what opens the dialog
+      await pause(1200);
+      if (model.filter) {
+        await send(model.filter);
+        await pause(800);         // the list filters as it types
+      }
+      for (let step = 0; step < (Number(model.down) || 0); step += 1) {
+        await send(WIN32_DOWN);
+        await pause(150);
+      }
+      await send(WIN32_ENTER);    // select the highlighted model
+      if (model.id) await invoke('remember_pane_model', { id, model: model.id }).catch(() => {});
     } catch (error) {
       console.error('Could not switch model', error);
     }
@@ -94,14 +108,15 @@ export function installPaneModelPicker(invoke) {
     shownProvider = provider;
     submenu.replaceChildren();
     for (const model of provider.models || []) {
-      // A menu entry needs a label; the model id is what gets typed as /model.
-      if (!model?.label && !model.id) continue;
+      // A menu entry needs a label and something to type; the model id is optional
+      // and only used to remember the choice for the pane's next launch.
+      if (!model?.label && !model?.filter) continue;
       const item = document.createElement('button');
       item.type = 'button';
       item.className = 'model-row';
       item.setAttribute('role', 'menuitem');
-      item.textContent = model.label || model.id;
-      item.title = model.id ? `Runs /model ${model.id} in this pane` : '';
+      item.textContent = model.label || model.filter;
+      item.title = model.filter ? `Selects "${model.filter}" in OpenCode's model dialog` : '';
       item.onclick = async () => {
         close();
         await switchModel(target, model);
@@ -130,9 +145,9 @@ export function installPaneModelPicker(invoke) {
     target = id;
     const generation = ++opening;
 
-    // Show the menu first, then fill it. Discovery reads Hermes' model catalog
-    // and can take a moment; opening only after it returned meant the menu
-    // appeared to do nothing, and on the cached path it never opened at all.
+    // Show the menu first, then fill it. Discovery shells out to opencode and
+    // takes seconds; opening only after it returned meant the menu appeared to
+    // do nothing, and on the cached path it never opened at all.
     shownProvider = null;
     menu.replaceChildren();
     if (!loaded) {
@@ -190,7 +205,7 @@ export function installPaneModelPicker(invoke) {
     if (!header || header.querySelector('.pane-model-btn')) return;
     const id = pane.dataset.id;
     // Every agent pane gets a picker; 'auth' is a sign-in shell, not an agent.
-    if (!id || !(id === 'master' || /^hermes-\d+$/.test(id))) return;
+    if (!id || !(id === 'master' || /^oc-\d+$/.test(id))) return;
     const group = document.createElement('span');
     group.className = 'pane-menu-group pane-menu-model';
     const label = document.createElement('span');

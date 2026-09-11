@@ -12,10 +12,9 @@ const run = promisify(execFile);
 const install = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 async function executable() {
   const candidates = process.env.PISQUAD_EXE ? [process.env.PISQUAD_EXE] :
-    [path.join(install, 'hermes-quad-squad.exe'), path.join(install, 'src-tauri/target/debug/hermes-quad-squad.exe'),
-     path.join(install, 'pi-squad.exe'), path.join(install, 'src-tauri/target/debug/pi-squad.exe')];
+    [path.join(install, 'pi-squad.exe'), path.join(install, 'src-tauri/target/debug/pi-squad.exe')];
   for (const candidate of candidates) { try { await access(candidate); return candidate; } catch {} }
-  throw new Error('Hermes Quad Squad executable missing. Build or install it first.');
+  throw new Error('Pi Squad executable missing. Build or install Pi Squad first.');
 }
 async function relay(args) {
   try {

@@ -29,19 +29,19 @@ import './style.css';
 
 document.getElementById('app').innerHTML = `
 
-<header class="top-bar"><div class="brand">Hermes Quad Squad <span>HM</span></div><div class="paths"><div class="path-row"><label for="project-path">Project</label><input id="project-path" type="text" placeholder="Select a project folder"><button class="btn icon" id="btn-browse" title="Browse for a project folder" aria-label="Browse for a project folder">📁</button></div><div class="path-row"><label for="repo-url">Repo</label><input id="repo-url" type="text" placeholder="owner/name or https://github.com/owner/name"><button class="btn icon" id="btn-save-repo" title="Save the repository and tell the agents" aria-label="Save repository">💾</button></div></div><div class="bar-actions"><button class="btn btn-primary" id="btn-start">Open workspace</button><button class="btn icon" id="btn-add-agent" disabled title="Add an agent" aria-label="Add an agent">+</button><button class="btn icon" id="btn-login" title="Hermes sign in" aria-label="Hermes sign in">🔑</button></div></header>
+<header class="top-bar"><div class="brand">Quad Squad <span>OC</span></div><div class="paths"><div class="path-row"><label for="project-path">Project</label><input id="project-path" type="text" placeholder="Select a project folder"><button class="btn icon" id="btn-browse" title="Browse for a project folder" aria-label="Browse for a project folder">📁</button></div><div class="path-row"><label for="repo-url">Repo</label><input id="repo-url" type="text" placeholder="owner/name or https://github.com/owner/name"><button class="btn icon" id="btn-save-repo" title="Save the repository and tell the agents" aria-label="Save repository">💾</button></div></div><div class="bar-actions"><button class="btn btn-primary" id="btn-start">Open workspace</button><button class="btn icon" id="btn-add-agent" disabled title="Add an agent" aria-label="Add an agent">+</button><button class="btn icon" id="btn-login" title="OpenCode sign in" aria-label="OpenCode sign in">🔑</button></div></header>
 
 <div class="context-bar"><span id="workspace-label">One master and three agents.</span><button class="btn" id="btn-brief" disabled>Prepare master handover</button><button class="btn" id="btn-close">Close app</button></div>
 
 <div class="error-bar hidden" id="error-bar" role="alert"><span id="error-message"></span><button id="btn-dismiss-error" class="btn-close" aria-label="Dismiss">×</button></div>
 
-<div class="workspace-container"><section class="master-column" id="master-terminal-slot"><div class="empty-state"><strong>Your agents, in one place.</strong><p>Choose a project and open its workspace. One pane runs the master role; each pane keeps its own saved Hermes session. Every pane launches with your configured model.</p><small>Uses the installed Hermes Agent CLI and its existing authentication.</small></div></section><section class="subagents-column"><div id="worker-tabs" role="tablist" aria-label="Agent workspaces"></div><div id="subagent-grid" class="worker-workspaces"></div></section></div>
+<div class="workspace-container"><section class="master-column" id="master-terminal-slot"><div class="empty-state"><strong>Your agents, in one place.</strong><p>Choose a project and open its workspace. One pane runs the master role; each pane keeps its own saved OpenCode session. Every pane launches with the same user-configured model.</p><small>Uses installed CLIs and their existing authentication.</small></div></section><section class="subagents-column"><div id="worker-tabs" role="tablist" aria-label="Agent workspaces"></div><div id="subagent-grid" class="worker-workspaces"></div></section></div>
 
 <div id="brief-panel" hidden><label for="brief-text">Paste this into the master when its prompt is ready.</label><textarea id="brief-text" readonly></textarea><button class="btn" id="brief-hide">Hide handover</button></div>
 
 <footer class="composer-bar"><select id="target-select" aria-label="Worker"></select><textarea id="composer-input" rows="2" placeholder="Delegate a task to a worker. Or type directly in any terminal."></textarea><button class="btn btn-primary" id="btn-send">Queue task →</button></footer>
 
-<div class="footnote">Native interactive Hermes Agent terminals · PowerShell on Windows · your shell on Linux/macOS. All panes launch with your configured Hermes provider/model.</div>
+<div class="footnote">Native interactive terminals · PowerShell on Windows · your shell on Linux/macOS. All panes launch with your configured OpenCode provider/model.</div>
 
 <dialog id="close-dialog"><h2>Close workspace?</h2><p>Agents must finish active work first. Closing stops the master terminal; saved CLI history remains available.</p><div><button class="btn" id="close-cancel">Keep open</button><button class="btn btn-primary" id="close-confirm">Close workspace</button></div></dialog>`;
 
@@ -100,7 +100,7 @@ const el = {
 
 
 function workspaceFor(id) {
-  const number = Number(/^hermes-(\d+)$/.exec(id)?.[1]);
+  const number = Number(/^oc-(\d+)$/.exec(id)?.[1]);
   return number > 0 ? Math.floor((number - 1) / 4) : 0;
 }
 
@@ -208,7 +208,7 @@ function updateTargetOptions() {
   el.targetSelect.innerHTML = '';
   const groups = new Map();
 
-  state.activeAgents.filter(d => d.id.startsWith('hermes-')).forEach((desc) => {
+  state.activeAgents.filter(d => d.id.startsWith('oc-')).forEach((desc) => {
 
     const opt = document.createElement('option');
 
@@ -645,7 +645,7 @@ el.loginBtn.addEventListener('click', async () => {
 
   try {
 
-    createTerminalInstance(await invoke('login_hermes'));
+    createTerminalInstance(await invoke('login_pi'));
 
     const snapshots = await invoke('snapshot');
 
@@ -778,7 +778,7 @@ async function initialize() {
     if (!state.activeAgents.length) return;
     if (refreshing) return;
     refreshing = true;
-    try { const status = JSON.parse(await invoke('workspace_status')); for (const [number, item] of Object.entries(status)) { const session = state.terminals.get('hermes-' + number); if (session) session.badge.textContent = item.status.toUpperCase(); announceAgentStatus('hermes-' + number, item.status); } await refreshRelayStatus(); } catch (_) { /* project not yet open */ }
+    try { const status = JSON.parse(await invoke('workspace_status')); for (const [number, item] of Object.entries(status)) { const session = state.terminals.get('oc-' + number); if (session) session.badge.textContent = item.status.toUpperCase(); announceAgentStatus('oc-' + number, item.status); } await refreshRelayStatus(); } catch (_) { /* project not yet open */ }
     finally { refreshing = false; }
   }, 2500);
 }

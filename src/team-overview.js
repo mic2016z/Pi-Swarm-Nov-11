@@ -16,11 +16,10 @@ export function installTeamOverview(invoke) {
   dialog.setAttribute('aria-labelledby', 'team-overview-title');
   dialog.innerHTML = `
     <header class="team-overview-header"><h2 id="team-overview-title">Team overview</h2><button class="btn" id="team-overview-close" type="button">Close</button></header>
-    <p class="team-overview-intro">Current assignments and board state. Refresh to retrieve the latest snapshot.</p>
+    <p class="team-overview-intro">Current assignments and reported activity. Refresh to retrieve the latest snapshot.</p>
     <section class="team-overview-usage" aria-label="Usage"><strong>Tokens: <span id="team-overview-tokens">Unavailable</span></strong><strong>Cost: <span id="team-overview-cost">Unavailable</span></strong><p id="team-overview-usage-note"></p></section>
     <p id="team-overview-status" role="status" aria-live="polite"></p>
     <section id="team-overview-agents" aria-label="Agents"></section>
-    <section aria-label="Task board"><h3 class="team-overview-board-title">Task board</h3><div id="team-overview-board"></div></section>
     <footer class="team-overview-footer"><button class="btn" id="team-overview-refresh" type="button">Refresh</button></footer>`;
   document.body.appendChild(dialog);
   const status = dialog.querySelector('#team-overview-status');
@@ -59,26 +58,14 @@ export function installTeamOverview(invoke) {
         const list = document.createElement('dl');
         field(list, 'Role', agent.role);
         field(list, 'Status', agent.status);
-        field(list, 'Held file claims', agent.claims);
-        field(list, 'Last recorded model', agent.model);
         field(list, 'Scope / task', agent.task);
+        field(list, 'Claimed files', agent.files);
+        field(list, 'Last recorded model', agent.model);
+        field(list, 'Provider', agent.provider);
+        field(list, 'Recent recorded usage', agent.usage);
+        field(list, 'Latest result', agent.result);
         card.append(heading, list);
         agents.appendChild(card);
-      }
-      const board = Array.isArray(data.board?.slices) ? data.board.slices : [];
-      const boardBox = dialog.querySelector('#team-overview-board');
-      boardBox.replaceChildren();
-      if (board.length) {
-        for (const slice of board) {
-          const row = document.createElement('div');
-          row.className = `team-overview-slice slice-${String(slice.state || 'open').toLowerCase()}`;
-          row.textContent = `${slice.id} · ${slice.title || ''} — ${slice.state}${slice.owner ? ` (owner ${slice.owner})` : ''}${slice.reviewer ? ` · reviewer ${slice.reviewer}` : ''} · ${slice.messageCount ?? 0} message(s)`;
-          boardBox.appendChild(row);
-        }
-      } else {
-        const empty = document.createElement('p');
-        empty.textContent = 'No slices on the board yet.';
-        boardBox.appendChild(empty);
       }
       const usage = data.usage || {};
       dialog.querySelector('#team-overview-tokens').textContent = Number.isFinite(usage.tokens) && usage.tokens >= 0 ? usage.tokens.toLocaleString() : 'Unavailable';

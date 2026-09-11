@@ -1,6 +1,6 @@
 [package]
-name = "hermes-quad-squad"
-version = "1.1.0"
+name = "quad-squad-oc"
+version = "1.0.0"
 edition = "2021"
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

@@ -1,6 +1,6 @@
 // Display names are cosmetic and local to a project. Routing, reservations and
-// messaging always use the permanent ids (master, hermes-1, hermes-2 …), which
-// never change, so renaming a pane can never break coordination.
+// messaging always use the permanent ids (master, oc-1, oc-2 …), which never
+// change, so renaming a pane can never break coordination.
 //
 // Double-click a pane's title to edit it; Enter saves and tells the master.
 
