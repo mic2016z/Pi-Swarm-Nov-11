@@ -55,6 +55,33 @@ The colony model: the Queen decomposes a user task into slices, workers claim an
 7. **Settle correctness.** A relay reply is only the final assistant response of the turn that answered the request (freshness-guarded).
 8. **Visible swarm.** Live board/graph view in the app: slices, owners, blockers, queue depth.
 
+## Swarm Control UX (the human interface)
+
+The swarm is controlled from ONE surface; panes are for inspection only.
+
+### Design rules
+
+1. **One task in, one status out.** The user gives one task; the app shows one colony status. No reading 16 panes to know what's happening.
+2. **Three human moments.** The human interacts at exactly three points: (a) give the task, (b) approve the plan, (c) handle exceptions. Everything between runs itself.
+3. **Quiet success, loud exceptions.** The UI is silent while slices flow. Alerts fire only on: blocked slices, TTL expiry, idle workers with open matching work, escalation requests.
+4. **Every intervention is one click and reversible.** Retry, reassign, unblock — never edit JSON.
+
+### Layout
+
+- **Task bar (top, always visible).** One input + Send. Beside it: Pause All / Resume, Kill, and the cost meter (tokens per workspace).
+- **Plan preview (the checkpoint).** After Send, the lead queen proposes a partition: workspaces × file domains × slices with deps and tags. The user approves, edits (move a slice, change a workspace), or rejects. Workers may not claim until approved. This is the single most important control — the human is the partition guard.
+- **Live board (main view, the ant farm).** Slices as cards flowing across state columns (open → claimed → review → changes → blocked → done), colored by workspace, with dep edges and TTL countdown badges. Click a slice: owner, messages, acceptance evidence, one-click retry/reassign/block.
+- **Right rail.** Colony status: agents busy/idle per workspace, queue depth, tokens spent. Below it: the **escalation queue** — workers' requests for powers they don't have (web, git, installs), each with the requested tool call; the queen executes them, but the human sees and can veto.
+- **Tabs = workspaces.** Each tab holds its 4 panes for inspection and manual driving; control never requires opening a tab.
+- **Completion gate.** When all slices are done: a summary card — per-slice acceptance evidence (command, output, exit code), reservation check, test results — with Declare Complete (queen power, human visibility).
+
+### Anti-goals
+
+- No chat-with-the-queen as the control mechanism (verbose, ambiguous)
+- No dashboard of every message (noise)
+- No JSON editing for interventions
+- No silent background pauses: every guard action (block, TTL, cutoff) appears as a card on the board with its reason
+
 ## Known Bugs Carried Over (fix in this build, from HQS PRD)
 
 1. Relay identity check can never match (`sessionId` vs `sessionID`) — whole `--relay`/MCP path dead.
